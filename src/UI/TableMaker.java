@@ -13,18 +13,24 @@ public class TableMaker {
 	private TableColumn<ObservableList<String>, String> column;
 	private ScrollPane TableHolder = new ScrollPane();
 	
-	public TableMaker(int cart){
-		if(cart == 1){
+	public TableMaker(String type){
+		if(type.equals("Ongoing")){
 			TableHolder.setMaxHeight(200);
 			initColumnCart();
 		}
-		else if(cart == 2){
+		else if(type.equals("Hold")){
 			TableHolder.setMaxHeight(460);
 			initColumnHold();
 		}
-		else if(cart == 0){
+		else if(type.equals("RETURN ITEM") || type.equals("Search")){
 			TableHolder.setMaxHeight(140);
 			initColumnSearch();
+		} else if (type.equals("SERVICE WORKER")) {
+			TableHolder.setMaxHeight(140);
+			initColumnServiceWorkerSearch();
+		} else if (type.equals("CHANGE")) {
+			TableHolder.setMaxHeight(140);
+			initColumnChangeCustomerSearch();
 		}
 		
 		TableHolder.setContent(Table);
@@ -158,6 +164,66 @@ public class TableMaker {
 		column = new TableColumn<>("Ex Price");
 		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(4)));
 		column.prefWidthProperty().bind(TableHolder.widthProperty().multiply(0.20));
+		column.setStyle("-fx-alignment: CENTER;");
+		column.setResizable(false);
+		Table.getColumns().add(column);
+	}
+	
+	private void initColumnServiceWorkerSearch() {
+		column = new TableColumn<>("ID");
+		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(0)));
+		column.prefWidthProperty().bind(TableHolder.widthProperty().divide(8.3));
+		column.setStyle("-fx-alignment: CENTER;");
+		column.setResizable(false);
+		Table.getColumns().add(column);
+		
+		column = new TableColumn<>("NAME");
+		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(1)));
+		column.prefWidthProperty().bind(TableHolder.widthProperty().divide(2));
+		column.setStyle("-fx-alignment: CENTER;");
+		column.setResizable(false);
+		Table.getColumns().add(column);
+		
+		column = new TableColumn<>("SALARY");
+		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(2)));
+		column.prefWidthProperty().bind(TableHolder.widthProperty().divide(3));
+		column.setStyle("-fx-alignment: CENTER;");
+		column.setResizable(false);
+		Table.getColumns().add(column);
+	};
+	
+	private void initColumnChangeCustomerSearch() {
+		column = new TableColumn<>("ID");
+		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(0)));
+		column.prefWidthProperty().bind(TableHolder.widthProperty().divide(10.3));
+		column.setStyle("-fx-alignment: CENTER;");
+		column.setResizable(false);
+		Table.getColumns().add(column);
+		
+		column = new TableColumn<>("NAME");
+		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(1)));
+		column.prefWidthProperty().bind(TableHolder.widthProperty().divide(4));
+		column.setStyle("-fx-alignment: CENTER;");
+		column.setResizable(false);
+		Table.getColumns().add(column);
+		
+		column = new TableColumn<>("ADDRESS");
+		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(2)));
+		column.prefWidthProperty().bind(TableHolder.widthProperty().divide(4));
+		column.setStyle("-fx-alignment: CENTER;");
+		column.setResizable(false);
+		Table.getColumns().add(column);
+		
+		column = new TableColumn<>("DEBT");
+		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(3)));
+		column.prefWidthProperty().bind(TableHolder.widthProperty().divide(5.5));
+		column.setStyle("-fx-alignment: CENTER;");
+		column.setResizable(false);
+		Table.getColumns().add(column);
+		
+		column = new TableColumn<>("LIMIT");
+		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(4)));
+		column.prefWidthProperty().bind(TableHolder.widthProperty().divide(5.5));
 		column.setStyle("-fx-alignment: CENTER;");
 		column.setResizable(false);
 		Table.getColumns().add(column);

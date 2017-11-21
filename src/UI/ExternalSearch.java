@@ -1,9 +1,9 @@
 package UI;
 
+import UI_interface.ExternalSearchInterface;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -13,14 +13,20 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class ExternalSearch extends AlertBox{
+public class ExternalSearch extends AlertBox implements ExternalSearchInterface {
 
-	private VBox promptBox;
+	protected VBox promptBox;
+	
+	protected Image searchIcon = new Image(("search-icon.png"));
+	protected TextField searchField = new TextField();
+	protected Button searchButton = new Button();
+	protected ToggleGroup searchToggle = new ToggleGroup();
+	protected TableMaker searchTable;
 	
 	public ExternalSearch(String title) {
 		super(title);
+		searchTable = new TableMaker(title);
 		initItemSearch();
-		addToReturnSearch("1010101", "gass and stuff", 2, 300, "RETAIL SALE");
 		initGridConstraints();
 		AddToGrid();
 	}
@@ -28,12 +34,6 @@ public class ExternalSearch extends AlertBox{
 	public void runWindow(){
 		showBox();
 	}
-	
-	protected Image searchIcon = new Image(("search-icon.png"));
-	protected TextField searchField = new TextField();
-	protected Button searchButton = new Button();
-	protected ToggleGroup searchToggle = new ToggleGroup();
-	protected TableMaker searchTable = new TableMaker(0);
 	
 	private void initItemSearch() {
 		promptBox = new VBox(10);
@@ -46,14 +46,16 @@ public class ExternalSearch extends AlertBox{
 		searchView.setFitWidth(15);	
 		searchButton.setGraphic(searchView);
 		
+		/*
 		RadioButton itemRadio = new RadioButton("Item Code"),
 					descRadio = new RadioButton("Description");
 		itemRadio.setToggleGroup(searchToggle);
 		descRadio.setToggleGroup(searchToggle);
 		searchToggle.selectToggle(itemRadio);
+		*/
 		
 		searchInput.getChildren().addAll(searchButton, searchField);
-		searchBox.getChildren().addAll(searchInput, itemRadio, descRadio);
+		searchBox.getChildren().addAll(searchInput);
 		
 		promptBox.getChildren().add(searchBox);
 		
@@ -86,18 +88,22 @@ public class ExternalSearch extends AlertBox{
 				qty += oldQty;
 				searchTable.updateSearch(x, itemCode, desc, qty, price);
 				found = true;
+				
 			}
 		}
 		if(!found)
 			searchTable.addToSearch(itemCode, desc, qty, price, type);
 	}
 
-	private void initGridConstraints() {
+	private  void initGridConstraints() {
 		GridPane.setConstraints(promptBox, 0, 0);
 	}
 
 	private void AddToGrid() {
 		getGrid().getChildren().addAll(promptBox);
 	}
+
+	@Override
+	public void initSearchToggles() {}
 
 }
