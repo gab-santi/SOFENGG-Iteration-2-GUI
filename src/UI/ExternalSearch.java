@@ -1,5 +1,7 @@
 package UI;
 
+import java.util.ArrayList;
+
 import UI_interface.ExternalSearchInterface;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -23,16 +25,21 @@ public class ExternalSearch extends AlertBox implements ExternalSearchInterface 
 	protected ToggleGroup searchToggle = new ToggleGroup();
 	protected TableMaker searchTable;
 	
+	
+	protected ArrayList<String> returningRow;
+	
 	public ExternalSearch(String title) {
 		super(title);
+		returningRow = null;
 		searchTable = new TableMaker(title);
 		initItemSearch();
 		initGridConstraints();
 		AddToGrid();
 	}
 	
-	public void runWindow(){
+	public ArrayList<String> runWindow(){
 		showBox();
+		return returningRow;
 	}
 	
 	private void initItemSearch() {
@@ -65,17 +72,16 @@ public class ExternalSearch extends AlertBox implements ExternalSearchInterface 
 	}
 	
 
-	private void initSearchAdder() {
+	public void initSearchAdder() {
 		searchTable.getRawTable().setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override 
 		    public void handle(MouseEvent event) {
-				
 		        if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-		        	System.out.println("nigga");
+		        	returningRow = new ArrayList<String>(searchTable.getRawTable().getSelectionModel().getSelectedItem());
+		        	closeBox();
 		        }
 			}
 		});
-		
 	}
 	
 	public void addToReturnSearch(String itemCode, String desc, int qty, double price, String type){
@@ -93,6 +99,14 @@ public class ExternalSearch extends AlertBox implements ExternalSearchInterface 
 		}
 		if(!found)
 			searchTable.addToSearch(itemCode, desc, qty, price, type);
+	}
+	
+	public void addToServiceSearch(int id, String name, double salary) {
+		searchTable.addToSearch(id, name, salary);
+	}
+	
+	public void addToCustomerSearch(int id, String name, String address, double debt, double limit) {
+		searchTable.addToSearch(id, name, address, debt, limit);
 	}
 
 	private  void initGridConstraints() {

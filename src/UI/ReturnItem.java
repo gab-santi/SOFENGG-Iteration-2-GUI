@@ -1,6 +1,10 @@
 package UI;
 
+import java.util.ArrayList;
+
+import javafx.event.EventHandler;
 import javafx.scene.control.RadioButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 public class ReturnItem extends ExternalSearch{
@@ -26,6 +30,5 @@ public class ReturnItem extends ExternalSearch{
 		searchBox.getChildren().addAll(itemRadio, descRadio);
 		
 	}
-
-
+	
 }

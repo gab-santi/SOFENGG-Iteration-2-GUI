@@ -1,6 +1,10 @@
 package UI;
 
+import java.util.ArrayList;
+
+import javafx.event.EventHandler;
 import javafx.scene.control.RadioButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 public class ServiceWorker extends ExternalSearch {
@@ -8,6 +12,7 @@ public class ServiceWorker extends ExternalSearch {
 	public ServiceWorker(String title) {
 		super(title);
 		initSearchToggles();
+		addToServiceSearch(1, "Gary Non", 10.00);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -26,7 +31,6 @@ public class ServiceWorker extends ExternalSearch {
 		 */
 		HBox searchBox = (HBox) promptBox.getChildren().get(0);			
 		searchBox.getChildren().addAll(idRadio, nameRadio, salaryRadio);
-		
 	}
 
 }

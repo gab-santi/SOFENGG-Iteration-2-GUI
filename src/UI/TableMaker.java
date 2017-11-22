@@ -248,10 +248,34 @@ public class TableMaker {
 		Table.getItems().add(FXCollections.observableArrayList(row));
 	}
 	
+	public void addToSearch(int id, String name, double salary) {
+		ObservableList<String> row = FXCollections.observableArrayList();
+		row.addAll(Integer.toString(id), name, "P" + Double.toString(salary));
+		Table.getItems().add(FXCollections.observableArrayList(row));
+	}
+	
+	public void addToSearch(int id, String name, String address, double debt, double limit) {
+		ObservableList<String> row = FXCollections.observableArrayList();
+		row.addAll(Integer.toString(id), name, address, Double.toString(debt), Double.toString(limit));
+		Table.getItems().add(FXCollections.observableArrayList(row));
+	}
+	
 	public void updateSearch(int index, String itemCode, String desc, int qty, double price){
 		ObservableList<String> row = FXCollections.observableArrayList(); 
 		row.addAll(itemCode, desc, Integer.toString(qty), "P" + Double.toString(price), "P" + Double.toString(price * qty));
 		Table.getItems().set(index,FXCollections.observableArrayList(row));
+	}
+	
+	public void updateSearch(int id, String name, double salary) {
+		ObservableList<String> row = FXCollections.observableArrayList();
+		row.addAll(Integer.toString(id), name, "P" + Double.toString(salary));
+		Table.getItems().set(id, FXCollections.observableArrayList(row));
+	}
+	
+	public void updateSearch(int id, String name, String address, double debt, double limit) {
+		ObservableList<String> row = FXCollections.observableArrayList();
+		row.addAll(Integer.toString(id), name, address, Double.toString(debt), Double.toString(limit));
+		Table.getItems().set(id,  FXCollections.observableArrayList(row));
 	}
 	
 	public void switchSearchPriceData(String status){

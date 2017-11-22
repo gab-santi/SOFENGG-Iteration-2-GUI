@@ -1,5 +1,7 @@
 package UI;
 
+import java.util.ArrayList;
+
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -26,6 +28,8 @@ public class CashierMain extends CashierView{
 	private HBox CustBox;
 	private VBox NavBox, TranBox;
 	private TabPane cartPane = new TabPane();
+	
+	private ArrayList<String> returnedRow = null;
 	
 	//XXX
 	public CashierMain(Stage mStage, String title){
@@ -78,7 +82,7 @@ public class CashierMain extends CashierView{
 				+ "-fx-base: Green; -fx-background-radius: 0%;");
 		
 		custRButton.setOnAction(e -> {
-			if(cLabels[1].equals("Current Customer"))
+			if(!cLabels[1].getText().equals("Customer: None"))
 				setCustomerLabels("None", "N/A", 0, 0);
 		});
 		
@@ -90,8 +94,9 @@ public class CashierMain extends CashierView{
 		custCButton.setOnAction(e -> {
 			System.out.println(custCButton.getText());
 			ExternalSearch es = esf.getExternalSearch(custCButton.getText());
-			
-			es.runWindow();
+			returnedRow =  es.runWindow();
+			if (returnedRow != null)
+				setCustomerLabels(returnedRow.get(1), returnedRow.get(2), Double.parseDouble(returnedRow.get(3)), Double.parseDouble(returnedRow.get(4)));
 		});
 	}
 	

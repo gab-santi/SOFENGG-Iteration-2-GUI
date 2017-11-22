@@ -1,6 +1,10 @@
 package UI;
 
+import java.util.ArrayList;
+
+import javafx.event.EventHandler;
 import javafx.scene.control.RadioButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 public class SelectCustomer extends ExternalSearch {
@@ -8,9 +12,9 @@ public class SelectCustomer extends ExternalSearch {
 	public SelectCustomer(String title) {
 		super(title);
 		initSearchToggles();
-		System.out.println(title);
+		addToCustomerSearch(1, "Jarod Martinez", "Makati", 1000, 2000);
 	}
-
+	
 	@Override
 	public void initSearchToggles() {
 		RadioButton idRadio = new RadioButton("ID"),
@@ -28,8 +32,6 @@ public class SelectCustomer extends ExternalSearch {
 		 */
 		HBox searchBox = (HBox) promptBox.getChildren().get(0);			
 		searchBox.getChildren().addAll(idRadio, nameRadio, addressRadio, debtRadio);
-		
 	}
-
 
 }
