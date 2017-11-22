@@ -13,18 +13,24 @@ public class TableMaker {
 	private TableColumn<ObservableList<String>, String> column;
 	private ScrollPane TableHolder = new ScrollPane();
 	
-	public TableMaker(int cart){
-		if(cart == 1){
+	public TableMaker(String type){
+		if(type.equals("Ongoing")){
 			TableHolder.setMaxHeight(200);
 			initColumnCart();
 		}
-		else if(cart == 2){
+		else if(type.equals("Hold")){
 			TableHolder.setMaxHeight(460);
 			initColumnHold();
 		}
-		else if(cart == 0){
+		else if(type.equals("RETURN ITEM") || type.equals("Search")){
 			TableHolder.setMaxHeight(140);
 			initColumnSearch();
+		} else if (type.equals("SERVICE WORKER")) {
+			TableHolder.setMaxHeight(140);
+			initColumnServiceWorkerSearch();
+		} else if (type.equals("CHANGE")) {
+			TableHolder.setMaxHeight(140);
+			initColumnChangeCustomerSearch();
 		}
 		
 		TableHolder.setContent(Table);
@@ -163,6 +169,66 @@ public class TableMaker {
 		Table.getColumns().add(column);
 	}
 	
+	private void initColumnServiceWorkerSearch() {
+		column = new TableColumn<>("ID");
+		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(0)));
+		column.prefWidthProperty().bind(TableHolder.widthProperty().divide(8.3));
+		column.setStyle("-fx-alignment: CENTER;");
+		column.setResizable(false);
+		Table.getColumns().add(column);
+		
+		column = new TableColumn<>("NAME");
+		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(1)));
+		column.prefWidthProperty().bind(TableHolder.widthProperty().divide(2));
+		column.setStyle("-fx-alignment: CENTER;");
+		column.setResizable(false);
+		Table.getColumns().add(column);
+		
+		column = new TableColumn<>("SALARY");
+		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(2)));
+		column.prefWidthProperty().bind(TableHolder.widthProperty().divide(3));
+		column.setStyle("-fx-alignment: CENTER;");
+		column.setResizable(false);
+		Table.getColumns().add(column);
+	};
+	
+	private void initColumnChangeCustomerSearch() {
+		column = new TableColumn<>("ID");
+		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(0)));
+		column.prefWidthProperty().bind(TableHolder.widthProperty().divide(10.3));
+		column.setStyle("-fx-alignment: CENTER;");
+		column.setResizable(false);
+		Table.getColumns().add(column);
+		
+		column = new TableColumn<>("NAME");
+		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(1)));
+		column.prefWidthProperty().bind(TableHolder.widthProperty().divide(4));
+		column.setStyle("-fx-alignment: CENTER;");
+		column.setResizable(false);
+		Table.getColumns().add(column);
+		
+		column = new TableColumn<>("ADDRESS");
+		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(2)));
+		column.prefWidthProperty().bind(TableHolder.widthProperty().divide(4));
+		column.setStyle("-fx-alignment: CENTER;");
+		column.setResizable(false);
+		Table.getColumns().add(column);
+		
+		column = new TableColumn<>("DEBT");
+		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(3)));
+		column.prefWidthProperty().bind(TableHolder.widthProperty().divide(5.5));
+		column.setStyle("-fx-alignment: CENTER;");
+		column.setResizable(false);
+		Table.getColumns().add(column);
+		
+		column = new TableColumn<>("LIMIT");
+		column.setCellValueFactory(param ->new ReadOnlyObjectWrapper<>(param.getValue().get(4)));
+		column.prefWidthProperty().bind(TableHolder.widthProperty().divide(5.5));
+		column.setStyle("-fx-alignment: CENTER;");
+		column.setResizable(false);
+		Table.getColumns().add(column);
+	}
+	
 	public void addToCart(String itemCode, String desc, int qty, double price){
 		int id = Table.getItems().size() + 1;
 		ObservableList<String> row = FXCollections.observableArrayList(); 
@@ -182,10 +248,34 @@ public class TableMaker {
 		Table.getItems().add(FXCollections.observableArrayList(row));
 	}
 	
+	public void addToSearch(int id, String name, double salary) {
+		ObservableList<String> row = FXCollections.observableArrayList();
+		row.addAll(Integer.toString(id), name, "P" + Double.toString(salary));
+		Table.getItems().add(FXCollections.observableArrayList(row));
+	}
+	
+	public void addToSearch(int id, String name, String address, double debt, double limit) {
+		ObservableList<String> row = FXCollections.observableArrayList();
+		row.addAll(Integer.toString(id), name, address, Double.toString(debt), Double.toString(limit));
+		Table.getItems().add(FXCollections.observableArrayList(row));
+	}
+	
 	public void updateSearch(int index, String itemCode, String desc, int qty, double price){
 		ObservableList<String> row = FXCollections.observableArrayList(); 
 		row.addAll(itemCode, desc, Integer.toString(qty), "P" + Double.toString(price), "P" + Double.toString(price * qty));
 		Table.getItems().set(index,FXCollections.observableArrayList(row));
+	}
+	
+	public void updateSearch(int id, String name, double salary) {
+		ObservableList<String> row = FXCollections.observableArrayList();
+		row.addAll(Integer.toString(id), name, "P" + Double.toString(salary));
+		Table.getItems().set(id, FXCollections.observableArrayList(row));
+	}
+	
+	public void updateSearch(int id, String name, String address, double debt, double limit) {
+		ObservableList<String> row = FXCollections.observableArrayList();
+		row.addAll(Integer.toString(id), name, address, Double.toString(debt), Double.toString(limit));
+		Table.getItems().set(id,  FXCollections.observableArrayList(row));
 	}
 	
 	public void switchSearchPriceData(String status){

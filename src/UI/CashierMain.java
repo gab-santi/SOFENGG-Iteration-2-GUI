@@ -1,5 +1,7 @@
 package UI;
 
+import java.util.ArrayList;
+
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -26,6 +28,8 @@ public class CashierMain extends CashierView{
 	private HBox CustBox;
 	private VBox NavBox, TranBox;
 	private TabPane cartPane = new TabPane();
+	
+	private ArrayList<String> returnedRow = null;
 	
 	//XXX
 	public CashierMain(Stage mStage, String title){
@@ -78,11 +82,24 @@ public class CashierMain extends CashierView{
 				+ "-fx-base: Green; -fx-background-radius: 0%;");
 		
 		custRButton.setOnAction(e -> {
-			if(cLabels[1].equals("Current Customer"))
+			if(!cLabels[1].getText().equals("Customer: None"))
 				setCustomerLabels("None", "N/A", 0, 0);
 		});
+		
+		initCustomerButtonActions();
 	}
-
+	
+	private void initCustomerButtonActions() {
+		ExternalSearchFactory esf = new ExternalSearchFactory();
+		custCButton.setOnAction(e -> {
+			System.out.println(custCButton.getText());
+			ExternalSearch es = esf.getExternalSearch(custCButton.getText());
+			returnedRow =  es.runWindow();
+			if (returnedRow != null)
+				setCustomerLabels(returnedRow.get(1), returnedRow.get(2), Double.parseDouble(returnedRow.get(3)), Double.parseDouble(returnedRow.get(4)));
+		});
+	}
+	
 	private void initCustomerLabels(){
 		cLabels[0] = new Label("Current Customer");
 		cLabels[0].setFont(Font.font("Arial", FontWeight.BLACK, 15));
@@ -156,11 +173,16 @@ public class CashierMain extends CashierView{
 	}
 	
 	private void initNavButtonActions() {
+		ExternalSearchFactory esf = new ExternalSearchFactory();
+		
 		returnItemB.setOnAction(e -> {
-			ExternalSearch es = new ExternalSearch("Return Item");
+			ExternalSearch es = esf.getExternalSearch(returnItemB.getText());
 			es.runWindow();
 		});
-		
+		serviceWorkerB.setOnAction(e -> {
+			ExternalSearch es = esf.getExternalSearch(serviceWorkerB.getText());
+			es.runWindow();
+		});
 	}
 
 	public Button getLogOutbutton(){
@@ -187,8 +209,8 @@ public class CashierMain extends CashierView{
 	private void initCart() {
 		cartPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 		ongoingTab = new Tab("ONGOING");
-		ongoingWTable = new TableMaker(1);
-		ongoingRTable = new TableMaker(1);
+		ongoingWTable = new TableMaker("Ongoing");
+		ongoingRTable = new TableMaker("Ongoing");
 		ongoingTab.setStyle("-fx-focus-color: transparent; "
 				          + "-fx-font-weight: bold");
 		cartPane.getTabs().add(ongoingTab);
@@ -279,7 +301,7 @@ public class CashierMain extends CashierView{
 
 	private void initHCart() {
 		holdTab = new Tab("HOLD");
-		holdTable = new TableMaker(2);
+		holdTable = new TableMaker("Hold");
 		holdTab.setStyle("-fx-focus-color: transparent; "
 					   + "-fx-font-weight: bold");
 		cartPane.getTabs().add(holdTab);
@@ -449,7 +471,7 @@ public class CashierMain extends CashierView{
 	protected TextField searchField = new TextField();
 	protected Button searchButton = new Button();
 	protected ToggleGroup searchToggle = new ToggleGroup();
-	protected TableMaker searchTable = new TableMaker(0);
+	protected TableMaker searchTable = new TableMaker("Search");
 	
 	private void initItemSearch() {
 		HBox searchBox = new HBox(25),
